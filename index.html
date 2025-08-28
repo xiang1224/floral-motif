@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>方花咖啡廳</title>
+    <meta name="description" content="方花咖啡廳官方網站｜菜單、主廚團隊、用餐環境、聯絡資訊。" />
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f97316'/%3E%3Ctext x='50' y='58' font-size='58' text-anchor='middle' fill='white'%3E酩%3C/text%3E%3C/svg%3E" />
+    <!-- TailwindCSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <script src="https://unpkg.com/vue-router@4"></script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"></div>
+    
+<script>
+    const siteData = {
+        name: 'FLORAL-MOTIF',
+        chinesename: '方花咖啡廳',
+        partner: '朝酩',
+        hotline: '70060700、30127189、40118049',
+        address: '威斯普奇海灘 征服者街',
+        hours: '營業時間｜請關注羽毛',
+        menuDay: {
+            main: [
+                { id: 1, name: '冷蕎麥湯麵', price: '$300', desc: '使用新鮮蕎麥麵，搭配清爽高湯與香料點綴。', icon: './img/food1.png' },
+                { id: 2, name: '烏龍麵', price: '$300', desc: 'Q彈烏龍麵，搭配濃郁醬汁與精選配料。', icon: './img/food2.png' },
+                { id: 3, name: '拉麵', price: '$300', desc: '日本風味拉麵，湯頭濃郁，麵條滑順。', icon: './img/food3.png' },
+                { id: 4, name: '味噌雞湯麵', price: '$300', desc: '日式味噌湯底，加入嫩雞肉與蔬菜。', icon: './img/food4.png' },
+                { id: 5, name: '海鮮清湯麵', price: '$300', desc: '新鮮海鮮熬製清湯，味道鮮美。', icon: './img/food5.png' },
+                { id: 6, name: '義大利麵', price: '$300', desc: '經典義大利麵，搭配特製醬汁與香料。', icon: './img/food6.png' },
+                { id: 7, name: '披薩', price: '$200', desc: '手工披薩，餅皮香脆，搭配新鮮食材。', icon: './img/food7.png' },
+                { id: 8, name: '薯條', price: '$200', desc: '酥脆薯條，外酥內軟，搭配獨家沾醬。', icon: './img/food8.png' }
+            ],
+            dessert: [
+                { id: 9, name: '提拉米蘇', price: '$300', desc: '層層浸潤咖啡香的綿密蛋糕，搭配濃郁的可可粉點綴。', icon: './img/dessert1.png' },
+                { id: 10, name: '櫻花奶酪', price: '$300', desc: '粉嫩細緻的奶酪帶有淡雅的櫻花香氣。', icon: './img/dessert2.png' },
+                { id: 11, name: '水果蛋糕', price: '$300', desc: '鬆軟香甜的海綿蛋糕，夾層新鮮水果與奶霜。', icon: './img/dessert3.png' },
+                { id: 17, name: '巧克力聖代', price: '$300', desc: '濃厚香醇的巧克力醬搭配冰淇淋與餅乾。', icon: './img/dessert4.png' },
+                { id: 18, name: '草莓聖代', price: '$300', desc: '新鮮草莓搭配冰淇淋與鮮奶油。', icon: './img/dessert5.png' },
+            ],
+            drinks: [
+                { id: 13, name: '珍珠奶茶', price: '$200', desc: '茶香濃郁，珍珠Q彈。', icon: './img/drink1.png' },
+                { id: 14, name: '咖啡', price: '$200', desc: '嚴選咖啡豆，香醇順口。', icon: './img/drink2.png' },
+                { id: 15, name: '紅茶', price: '$200', desc: '優質紅茶葉沖泡，口感柔和。', icon: './img/drink3.png' },
+                { id: 16, name: '櫻花茶', price: '$200', desc: '櫻花香氣茶飲，清新怡人。', icon: './img/drink4.png' }
+            ]
+        },
+        team: [
+            { id: 1, name: '閔允書', title: '店長', bio: '專長：哭沒有用。', avatar: './img/boss.png' },
+            { id: 2, name: '閔允熙', title: '副店長', bio: '專長：哭很有用。', avatar: './img/boss1.png' },
+            { id: 3, name: '元元 山田', title: '經理', bio: '專長：與雷射共舞', avatar: './img/user.png' },
+            { id: 4, name: '林風', title: '員工', bio: '專長：專業導遊。', avatar: './img/user.png' },
+            { id: 5, name: '亨特 布洛德', title: '員工', bio: '專長：開車!跟開車~', avatar: './img/user.png' },
+            { id: 6, name: '澄奈 佐藤', title: '員工', bio: '專長：追趕跑跳碰。', avatar: './img/user.png' },
+            { id: 7, name: '德納森 埃里希', title: '工讀生', bio: '專長：隱身術。', avatar: './img/user.png' },
+            { id: 8, name: '哈維 哈特曼', title: '工讀生', bio: '專長：打擊麵團、打擊犯罪。', avatar: './img/team5.jpg' },
+            { id: 9, name: '籃莠寧', title: '工讀生', bio: '專長：尋寶。', avatar: './img/user.png' },
+        ],
+        galleryDay: [
+            { id: 201, img: './img/morning4.png', caption: '大門的華麗序章' },
+            { id: 202, img: './img/morning5.png', caption: '陽光灑落的氛圍' },
+            { id: 203, img: './img/morning1.png', caption: '餐桌的溫柔時光' },
+            { id: 204, img: './img/morning2.png', caption: '乾淨的取餐區域' },
+            { id: 205, img: './img/morning3.png', caption: '寬敞的用餐區域' }
+        ],
+        mapScreenshot: './img/map.png'
+    };
+
+    /* NavBar */
+    const NavBar = {
+        template: `
+    <header class="sticky top-0 z-50 backdrop-blur border-b border-gray-200 bg-gradient-to-r from-orange-100 via-orange-50 to-white text-gray-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <router-link to="/" class="flex items-center gap-2 group">
+            <img src="./img/logo.png" alt="餐廳 Logo" class="h-12 rounded-2xl object-cover"/>
+            <span class="text-lg sm:text-xl font-bold tracking-tight group-hover:text-orange-600 transition-colors">{{ siteName }}</span>
+          </router-link>  
+          <nav class="flex items-center gap-6 text-sm font-medium ml-auto">
+            <router-link class="hover:text-orange-600" to="/menu">菜單</router-link>
+            <router-link class="hover:text-orange-600" to="/team">團隊</router-link>
+            <router-link class="hover:text-orange-600" to="/contact">聯絡資訊</router-link>
+            <a href="#" @click.prevent="$emit('open-modal')" class="hover:text-orange-600">方花咖啡廳</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+  `,
+        props: ['siteName']
+    };
+
+    /* Footer */
+    const SiteFooter = {
+        data() { return { year: new Date().getFullYear() } },
+        template: `
+    <footer class="border-t border-gray-200 bg-gradient-to-r from-orange-100 via-orange-50 to-white text-gray-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 grid sm:grid-cols-2 gap-8 text-sm">
+        <div>
+          <h3 class="font-semibold mb-2">{{ chinesename }}</h3>
+          <p>{{ address }}</p>
+          <p class="mt-1">訂餐專線：<span class="underline text-yellow">{{ hotline }}</span></p>
+          <p class="mt-1">{{ hours }}</p>
+        </div>
+        <div>
+          <h4 class="font-semibold mb-2">夥伴</h4>
+          <p>本餐廳與 
+            <a href="https://xiang1224.github.io/driftlight/#/" class="hover:text-orange-600">朝酩</a> 
+            合作，提供跨店優惠。
+          </p>
+          <p class="mt-2">© {{ year }} {{ chinesename }}. 版權所有。</p>
+        </div>
+      </div>
+    </footer>
+  `,
+        props: ['chinesename', 'address', 'hotline', 'hours']
+    };
+
+
+
+    /* Home */
+    const Home = {
+        props: ['data'],
+        data() { return { lightboxImg: null } },
+        template: `
+    <main>
+      <section class="bg-gradient-to-r from-orange-100 via-white to-orange-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900">歡迎來到 {{ data.name }}</h1>
+          <p class="mt-6 max-w-2xl mx-auto text-lg text-gray-600">享受精緻料理與舒適環境，白天活力，隨時陪伴您的美好時光。</p>
+        </div>
+      </section>
+      <section class="bg-gradient-to-r from-orange-100 via-white to-orange-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 pt-0">
+          <h2 class="text-2xl font-bold mb-8 text-gray-900">用餐環境</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div v-for="item in data.galleryDay" :key="item.id" class="group relative cursor-pointer" @click="lightboxImg = item.img">
+              <img :src="item.img" :alt="item.caption" class="w-full h-48 object-cover rounded-xl shadow-lg group-hover:opacity-80 transition"/>
+              <p class="mt-2 text-center text-sm text-gray-700">{{ item.caption }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div v-if="lightboxImg" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+        <img :src="lightboxImg" class="max-h-[80vh] max-w-[90vw] rounded-xl shadow-2xl"/>
+        <button @click="lightboxImg = null" class="absolute top-6 right-6 text-white text-2xl font-bold">✕</button>
+      </div>
+    </main>
+  `
+    };
+
+    /* Menu */
+    const Menu = {
+        props: ['data'],
+        template: `
+<main class="mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gradient-to-b from-orange-50 via-orange-25 to-white">
+  <div class="p-5 rounded-2xl">
+    <h1 class="text-2xl font-bold mb-6 text-center">菜單</h1>
+
+    <!-- 主食 -->
+    <h2 class="text-xl font-semibold mb-4">主食</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <article v-for="m in data.menuDay.main" :key="m.id"
+               class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-gradient-to-b from-orange-50 via-white to-orange-100 border border-gray-200 flex flex-col">
+        <div class="flex-shrink-0 h-32 w-full p-2 bg-white flex items-center justify-center">
+          <img :src="m.icon" alt="" class="h-full object-contain">
+        </div>
+        <div class="p-4 flex-1 flex flex-col justify-between">
+          <h3 class="font-semibold text-lg flex justify-between items-center">
+            <span>{{ m.name }}</span>
+            <span class="text-sm text-gray-500">{{ m.price }}</span>
+          </h3>
+          <p class="text-sm text-gray-600 mt-2">{{ m.desc }}</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- 點心 -->
+    <h2 class="text-xl font-semibold mb-4">點心</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <article v-for="m in data.menuDay.dessert" :key="m.id"
+               class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-gradient-to-b from-pink-50 via-white to-pink-100 border border-gray-200 flex flex-col">
+        <div class="flex-shrink-0 h-32 w-full p-2 bg-white flex items-center justify-center">
+          <img :src="m.icon" alt="" class="h-full object-contain">
+        </div>
+        <div class="p-4 flex-1 flex flex-col justify-between">
+          <h3 class="font-semibold text-lg flex justify-between items-center">
+            <span>{{ m.name }}</span>
+            <span class="text-sm text-gray-500">{{ m.price }}</span>
+          </h3>
+          <p class="text-sm text-gray-600 mt-2">{{ m.desc }}</p>
+        </div>
+      </article>
+    </div>
+
+    <!-- 飲品 -->
+    <h2 class="text-xl font-semibold mb-4">飲品</h2>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article v-for="m in data.menuDay.drinks" :key="m.id"
+               class="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 bg-gradient-to-b from-blue-50 via-white to-blue-100 border border-gray-200 flex flex-col">
+        <div class="flex-shrink-0 h-32 w-full p-2 bg-white flex items-center justify-center">
+          <img :src="m.icon" alt="" class="h-full object-contain">
+        </div>
+        <div class="p-4 flex-1 flex flex-col justify-between">
+          <h3 class="font-semibold text-lg flex justify-between items-center">
+            <span>{{ m.name }}</span>
+            <span class="text-sm text-gray-500">{{ m.price }}</span>
+          </h3>
+          <p class="text-sm text-gray-600 mt-2">{{ m.desc }}</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</main>
+`
+    };
+
+
+    /* Team */
+    const Team = {
+        props: ['data'],
+        template: `
+<main class="mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20 bg-gradient-to-b from-orange-50 via-orange-100 to-white">
+
+  <!-- 標題 -->
+  <h1 class="text-4xl font-extrabold text-center mb-12 tracking-wider drop-shadow bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-pink-500">
+    我們的團隊
+  </h1>
+
+  <!-- 卡片 -->
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
+    <article
+      v-for="t in data.team"
+      :key="t.id"
+      class="rounded-2xl overflow-hidden shadow-xl transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 bg-white/90 border border-orange-200"
+    >
+      <!-- 頭像 -->
+      <div class="flex justify-center mt-8">
+        <img
+          :src="t.avatar"
+          :alt="t.name"
+          class="h-28 w-28 rounded-full object-cover ring-4 shadow-md ring-orange-200"
+        />
+      </div>
+
+      <!-- 文字資訊 -->
+      <div class="p-6 text-center">
+        <h3 class="text-xl font-bold tracking-wide text-gray-800">
+          {{ t.name }}
+        </h3>
+        <p class="text-sm mt-1 font-medium uppercase tracking-wide text-orange-500">
+          {{ t.title }}
+        </p>
+        <p class="text-sm mt-4 leading-relaxed text-gray-600">
+          {{ t.bio }}
+        </p>
+      </div>
+    </article>
+  </div>
+</main>
+`
+    };
+
+
+    /* Contact */
+    const Contact = {
+        props: ['data'],
+        template: `
+<main class="mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-20 bg-gradient-to-b from-orange-50 via-orange-100 to-white">
+
+  <!-- 聯絡資訊 -->
+  <section class="rounded-2xl p-10 shadow-lg backdrop-blur-sm bg-white/90 border border-orange-200">
+    <h1 class="text-3xl font-bold mb-6 border-b pb-4 text-gray-900 border-orange-300/60">
+      聯絡資訊
+    </h1>
+    <p class="text-lg leading-relaxed text-gray-700">
+      📍 地址：{{ data.address }}
+    </p>
+    <p class="mt-4 text-lg leading-relaxed text-gray-700">
+      ☎ 電話：
+      <a
+        :href="'tel:' + data.hotline"
+        class="underline font-semibold text-orange-600 hover:text-orange-800 transition-colors"
+      >
+        {{ data.hotline }}
+      </a>
+    </p>
+    <p class="mt-4 text-lg leading-relaxed text-gray-700">
+      🕒 營業時間：{{ data.hours }}
+    </p>
+  </section>
+
+  <!-- 餐廳內規 -->
+  <section class="rounded-2xl p-10 shadow-lg backdrop-blur-sm bg-white/90 border border-orange-200">
+    <h2 class="text-3xl font-bold text-center mb-8 text-gray-900">
+      餐廳內規
+    </h2>
+    <ol class="list-decimal list-inside space-y-5 text-lg leading-relaxed text-gray-700">
+      <li>為維護餐廳安全，請勿在店內奔跑、跳躍或手持武器。因個人行為導致受傷，本餐廳概不負責，敬請配合與見諒。</li>
+      <li>餐廳內禁止吸煙，違者將請離場。</li>
+      <li>所有餐點皆為現點現做，敬請耐心等候，勿予催促。</li>
+      <li>請適量飲酒，保持理性，避免肢體衝突，營造和諧用餐環境。</li>
+      <li>不得於本店販售非法物品或從事犯罪行為。</li>
+      <li>本店國際時間11點前為餐館營業，11點後為酒吧模式。本時段僅提供當時段餐點，恕無法製作其他時段餐點，造成不便，敬請見諒。</li>
+    </ol>
+  </section>
+
+  <!-- 地圖截圖 -->
+  <section class="rounded-2xl p-10 shadow-lg backdrop-blur-sm text-center bg-white/90 border border-orange-200">
+    <h2 class="text-3xl font-bold mb-8 text-gray-900">
+      地圖位置
+    </h2>
+    <div class="flex justify-center">
+      <img
+        :src="data.mapScreenshot"
+        alt="餐廳地圖截圖"
+        class="rounded-2xl shadow-xl max-w-2xl w-full border border-gray-300 hover:scale-[1.02] transition-transform duration-300"
+      />
+    </div>
+  </section>
+</main>
+`
+    };
+
+
+
+
+    /* Vue app */
+    const app = Vue.createApp({
+        data() {
+            return { siteData, modalOpen: false }
+        },
+        template: `
+    <div>
+      <NavBar :siteName="siteData.name" @open-modal="modalOpen = true"/>
+      <router-view :data="siteData"></router-view>
+      <SiteFooter :chinesename="siteData.chinesename" :address="siteData.address" :hotline="siteData.hotline" :hours="siteData.hours" @open-modal="modalOpen = true"/>
+    </div>
+  `
+    });
+
+    app.component('NavBar', NavBar);
+    app.component('SiteFooter', SiteFooter);
+    app.component('Home', Home);
+    app.component('Menu', Menu);
+    app.component('Team', Team);
+    app.component('Contact', Contact);
+
+    /* router */
+    const routes = [
+        { path: '/', component: Home, props: { data: siteData } },
+        { path: '/menu', component: Menu, props: { data: siteData } },
+        { path: '/team', component: Team, props: { data: siteData } },
+        { path: '/contact', component: Contact, props: { data: siteData } }
+    ];
+
+    const router = VueRouter.createRouter({
+        history: VueRouter.createWebHashHistory(),
+        routes,
+    });
+
+    app.use(router);
+    app.mount('#app');
+</script>
