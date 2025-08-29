@@ -88,27 +88,59 @@
     };
 
     /* NavBar */
-    const NavBar = {
-        template: `
-    <header class="sticky top-0 z-50 backdrop-blur border-b border-gray-200 dark:border-gray-700 transition-colors duration-500 bg-[#E2D9C8] text-gray-700">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <router-link to="/" class="flex items-center gap-2 group">
-            <img src="./img/logo.png" alt="餐廳 Logo" class="h-12 rounded-2xl object-cover"/>
-            <span class="text-lg sm:text-xl font-bold tracking-tight group-hover:text-orange-600 transition-colors">{{ siteName }}</span>
-          </router-link>  
-          <nav class="flex items-center gap-6 text-sm font-medium ml-auto">
-            <router-link class="hover:text-orange-600" to="/menu">菜單</router-link>
-            <router-link class="hover:text-orange-600" to="/team">團隊</router-link>
-            <router-link class="hover:text-orange-600" to="/contact">聯絡資訊</router-link>
-            <a href="https://xiang1224.github.io/driftlight/#/" class="hover:text-orange-600">朝酩</a>
-          </nav>
-        </div>
-      </div>
-    </header>
+   const NavBar = {
+      template: `
+<header 
+  :class="darkMode ? 'bg-[#221e1d] text-white' : 'bg-[#E2D9C8] text-gray-700'"
+  class="sticky top-0 z-50 backdrop-blur border-b border-gray-200 dark:border-gray-700 transition-colors duration-500"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- LOGO -->
+      <router-link to="/" class="flex items-center gap-2 group">
+        <img src="./img/logo.png" alt="餐廳 Logo" class="h-12 rounded-2xl object-cover"/>
+        <span class="text-lg sm:text-xl font-bold tracking-tight group-hover:text-orange-600 transition-colors">{{ siteName }}</span>
+      </router-link>  
+
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium ml-auto">
+        <router-link class="hover:text-orange-600" to="/menu">菜單</router-link>
+        <router-link class="hover:text-orange-600" to="/team">團隊</router-link>
+        <router-link class="hover:text-orange-600" to="/contact">聯絡資訊</router-link>
+        <a href="https://xiang1224.github.io/driftlight/#/" class="hover:text-orange-600">朝酩</a>
+      </nav>
+
+      <!-- Hamburger Button (Mobile) -->
+      <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
+        <span v-if="!mobileMenuOpen">☰</span>
+        <span v-else>☰</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div 
+    v-if="mobileMenuOpen" 
+    class="md:hidden border-t border-gray-200 dark:border-gray-700"
+    :class="darkMode ? 'bg-[#221e1d]' : 'bg-[#E2D9C8]'"
+  >
+    <div class="px-2 pt-2 pb-3 space-y-1 flex flex-col">
+      <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/menu">菜單</router-link>
+      <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/team">團隊</router-link>
+      <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/contact">聯絡資訊</router-link>
+      <a href="https://xiang1224.github.io/driftlight/#/" class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700">朝酩</a>
+    </div>
+  </div>
+</header>
   `,
-        props: ['siteName']
+      props: ['siteName', 'darkMode'],
+      data() {
+        return {
+          mobileMenuOpen: false
+        };
+      }
     };
+
 
     /* Footer */
     const SiteFooter = {
