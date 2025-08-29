@@ -59,7 +59,7 @@
         name: 'FLORAL-MOTIF',
         chinesename: '方花咖啡廳',
         partner: '朝酩、醫護局',
-        hotline: '70060700、30127189、40118049',
+        hotline: '20117711',
         address: '艾爾塔 霍伊克大街',
         hours: '營業時間｜請關注羽毛',
         menuDay: {
@@ -98,9 +98,9 @@
         },
         team: [
             { id: 1, name: '亨特 布洛德', title: '店長', bio: '專長：開車!跟開車~', avatar: './img/team1.png' },
-            { id: 2, name: '趙富銓', title: '副店長', bio: '專長：暫無。', avatar: './img/user.png' },
+            { id: 2, name: '趙富銓', title: '副店長', bio: '專長：暫無。', avatar: './img/np.jpg' },
             { id: 3, name: '澄奈 佐藤', title: '經理', bio: '專長：追趕跑跳碰。', avatar: './img/team3.jpg' },
-            { id: 4, name: '吳乃心', title: '員工', bio: '專長：暫無。', avatar: './img/user.png' }
+            { id: 4, name: '吳乃心', title: '員工', bio: '專長：暫無。', avatar: './img/np.jpg' }
         ],
         galleryDay: [
             { id: 201, img: './img/view1.png', caption: '拱門下的優雅序曲' },
@@ -191,7 +191,7 @@
         <div>
           <h3 class="font-semibold mb-2">{{ chinesename }}</h3>
           <p>{{ address }}</p>
-          <p class="mt-1">訂餐專線：<span class="underline text-yellow">{{ hotline }}</span></p>
+          <p class="mt-1">訂餐專線：<span class="text-yellow">{{ hotline }}</span></p>
           <p class="mt-1">{{ hours }}</p>
         </div>
         <div>
@@ -481,7 +481,7 @@
       ☎ 電話：
       <a
         :href="'tel:' + data.hotline"
-        class="underline font-semibold text-gray-800 hover:text-gray-900 transition-colors"
+        class="text-gray-800 hover:text-gray-900 transition-colors"
       >
         {{ data.hotline }}
       </a>
