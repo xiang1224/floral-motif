@@ -22,6 +22,32 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+
+                /* 手機選單滑動動畫 */
+        .slide-enter-active, .slide-leave-active {
+          transition: all 0.3s ease;
+        }
+        .slide-enter-from {
+          max-height: 0;
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        .slide-enter-to {
+          max-height: 500px; /* 可依內容調整 */
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .slide-leave-from {
+          max-height: 500px;
+          opacity: 1;
+          transform: translateY(0);
+        }
+        .slide-leave-to {
+          max-height: 0;
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+
     </style>
 </head>
 
@@ -87,20 +113,34 @@
         mapScreenshot: './img/map.png'
     };
 
-    /* NavBar */
-   const NavBar = {
-      template: `
+  const NavBar = {
+    template: `
 <header 
   :class="darkMode ? 'bg-[#221e1d] text-white' : 'bg-[#E2D9C8] text-gray-700'"
   class="sticky top-0 z-50 backdrop-blur border-b border-gray-200 dark:border-gray-700 transition-colors duration-500"
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <!-- LOGO -->
-      <router-link to="/" class="flex items-center gap-2 group">
+    <div class="relative flex items-center h-16">
+
+      <!-- LOGO (手機置中) -->
+      <router-link 
+        to="/" 
+        class="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2 group"
+      >
         <img src="./img/logo.png" alt="餐廳 Logo" class="h-12 rounded-2xl object-cover"/>
-        <span class="text-lg sm:text-xl font-bold tracking-tight group-hover:text-orange-600 transition-colors">{{ siteName }}</span>
-      </router-link>  
+        <span class="hidden sm:inline-block text-lg sm:text-xl font-bold tracking-tight group-hover:text-orange-600 transition-colors">
+          {{ siteName }}
+        </span>
+      </router-link>
+
+      <!-- Hamburger Button (手機右側) -->
+      <button 
+        @click="mobileMenuOpen = !mobileMenuOpen"
+        class="ml-auto md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 z-10"
+      >
+        <span v-if="!mobileMenuOpen">☰</span>
+        <span v-else>✕</span>
+      </button>
 
       <!-- Desktop Nav -->
       <nav class="hidden md:flex items-center gap-6 text-sm font-medium ml-auto">
@@ -110,36 +150,33 @@
         <a href="https://xiang1224.github.io/driftlight/#/" class="hover:text-orange-600">朝酩</a>
       </nav>
 
-      <!-- Hamburger Button (Mobile) -->
-      <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-        <span v-if="!mobileMenuOpen">☰</span>
-        <span v-else>☰</span>
-      </button>
     </div>
   </div>
 
-  <!-- Mobile Menu -->
-  <div 
-    v-if="mobileMenuOpen" 
-    class="md:hidden border-t border-gray-200 dark:border-gray-700"
-    :class="darkMode ? 'bg-[#221e1d]' : 'bg-[#E2D9C8]'"
-  >
-    <div class="px-2 pt-2 pb-3 space-y-1 flex flex-col">
-      <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/menu">菜單</router-link>
-      <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/team">團隊</router-link>
-      <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/contact">聯絡資訊</router-link>
-      <a href="https://xiang1224.github.io/driftlight/#/" class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700">朝酩</a>
+  <!-- Mobile Menu (滑動下拉) -->
+  <transition name="slide">
+    <div 
+      v-if="mobileMenuOpen" 
+      class="md:hidden border-t border-gray-200 dark:border-gray-700 overflow-hidden"
+      :class="darkMode ? 'bg-[#221e1d]' : 'bg-[#E2D9C8]'"
+    >
+      <div class="px-2 pt-2 pb-3 space-y-1 flex flex-col">
+        <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/menu">菜單</router-link>
+        <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/team">團隊</router-link>
+        <router-link class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700" to="/contact">聯絡資訊</router-link>
+        <a href="https://xiang1224.github.io/driftlight/#/" class="block px-3 py-2 rounded-md hover:bg-orange-100 dark:hover:bg-gray-700">朝酩</a>
+      </div>
     </div>
-  </div>
+  </transition>
 </header>
   `,
-      props: ['siteName', 'darkMode'],
-      data() {
-        return {
-          mobileMenuOpen: false
-        };
-      }
-    };
+    props: ['siteName', 'darkMode'],
+    data() {
+      return {
+        mobileMenuOpen: false
+      };
+    }
+  };
 
 
     /* Footer */
